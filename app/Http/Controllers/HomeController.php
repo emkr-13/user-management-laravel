@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $usersCount = \App\Models\User::count();
+        $recentUsers = \App\Models\User::latest()->paginate(5);
+        return view('home', compact('usersCount', 'recentUsers'));
     }
 }
