@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -13,6 +14,7 @@ class ProfileController extends Controller
      */
     public function show()
     {
+        /** @var User $user */
         $user = Auth::user();
         return view('profile.show', compact('user'));
     }
@@ -22,6 +24,7 @@ class ProfileController extends Controller
      */
     public function edit()
     {
+        /** @var User $user */
         $user = Auth::user();
         return view('profile.edit', compact('user'));
     }
@@ -31,12 +34,13 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data = $request->only(['name', 'email']);
